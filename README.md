@@ -1,10 +1,10 @@
 # README
 
-![CMake Multi Platform Build](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main) 
-![docker](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/docker.yml/badge.svg?branch=main)
-![gtest](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/gtest.yml/badge.svg?branch=main)
-![valgrind](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/valgrind.yml/badge.svg?branch=main)
-![cppcheck](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/cppcheck.yml/badge.svg?branch=main)
+![CMake Multi Platform Build](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main) 
+![docker](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/docker.yml/badge.svg?branch=main)
+![gtest](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/gtest.yml/badge.svg?branch=main)
+![valgrind](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/valgrind.yml/badge.svg?branch=main)
+![cppcheck](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/cppcheck.yml/badge.svg?branch=main)
 
 This repository contains material and source code examples corresponding to the "Algorithm & Datastructures" lecture at FOM Hochschule für Oekonomie & Management gGmbH.
 
@@ -54,14 +54,93 @@ cd ~ && npm install doctoc
 <!-- \endcond
 -->
 
-## Quick Start: Local Build on Commandline
+## Quick Start
+
+### Github Codespace
+
+The following described how to develop, compile and run the source code in a github codespace. This option requires a github account and adding this account as "collaborator" to this project, but no further tools need to be installed on your computer.
+
+#### Creating a Codespace
+
+- Create a github account.
+- Ask for adding this account as "collaborator" to this project.
+- When done, click on "Code" and "Add codespace to main"
+  <br />
+  <img src="docs/pics/codespace01.png" width="200px" />
+- It will take a while to set up the code space - watch the progress bar in the bottom
+  <br />
+  <img src="docs/pics/codespace02.png" width="300px" />
+- In the _Terminal_ tab, create a new folder "build" and run `cmake` in this folder by typing
+  ```sh
+  mkdir -p build && cd build
+  cmake ..
+  ```
+  <img src="docs/pics/codespace03.png" width="300px" />
+- Compile (and link) the source code by typing
+  ```sh
+  make 
+  ```
+  <img src="docs/pics/codespace04.png" width="300px" />
+- ... and run the "hello world" application
+  ```sh
+  bin/hello/hello_world_c
+  ```
+  <img src="docs/pics/codespace05.png" width="300px" />
+
+#### Editing files in a Codespace
+
+- Navigate to the `user` folder. Create a new folder for own developments. To avoid potential conflicts with the repository, let's create a separate folder for you. Assuming `td` are your initials.
+  <br />
+  <img src="docs/pics/codespace10.png" width="200px" />
+- Create two files in this folder, `CMakeLists.txt` and `hellotd.c`
+  <br />
+  <img src="docs/pics/codespace11.png" width="200px" />
+- Create two files, `CMakeLists.txt` and `hellotd.c`
+  <br />
+  <img src="docs/pics/codespace11.png" width="200px" />
+- Add a "hello world"-example to the `hellotd.c` file:
+  ```C
+  #include<stdio.h>
+
+  int main(void) {
+    printf("Hello TD\n");
+    return 0;
+  }
+  ```
+  <img src="docs/pics/codespace12.png" width="200px" />
+- The file `CMakeLists.txt` is used for _CMake_, a software development tool for building applications which simplifies the whole building process in real-world-applications. All we need here is adding one line to this file:
+  ```CMake
+  add_executable(hellotd hellotd.c)
+  ```
+  <img src="docs/pics/codespace13.png" width="200px" />
+- We're now ready to build and execute our "hello world" development: Go back to the _Terminal_ windows and type
+  ```sh
+  cd /workspace/build/    ## (if you're not already in the 'build' folder)
+  cmake ..
+  ```
+  <img src="docs/pics/codespace14.png" width="200px" />
+  
+  ...followed by
+  ```sh
+  make
+  ```
+  ... which will result in some output with our 'hellotd' compilation at the end:
+  <br>
+  <img src="docs/pics/codespace15.png" width="200px" />
+- Run the application by  
+  ```sh
+  ./bin/user/hellotd
+  ```
+  <img src="docs/pics/codespace16.png" width="200px" />
+
+### Local Build on Commandline
 
 The following steps describe the minimal environment to download, compile and run the examples from this repository - and how to create own build targets.
 No IDE is required yet, it all works on the commandline.
 
 ### Clone Repository
 
-This section describes, how to "clone" all the files in this reporitoy to have them available locally.
+This section describes, how to "clone" all the files in this repository to have them available locally.
 
 - First, we need git for it - so let's install it:
 ```sh
@@ -71,7 +150,7 @@ apt-get install git
 - Then as "normal" user (not root!) clone this repository locally. _Note:_ This is cloning via https Web URL. Alternatively, ssh could be used.
 ```sh
 # cd to your local workspace folder of choice
-git clone https://github.com/thorstendikmann/fomss2024aud.git
+git clone https://github.com/thorstendikmann/fomws2025aud.git
 ```
 
 ### Local Build Requirements
@@ -157,7 +236,7 @@ A graphical IDE is optional, but generally considered to be very useful supporti
 
 ### Running CMake in Visual Studio Code
 
-- Open the `fomss2024aud` folder by `File -> Open Folder` from the menu.
+- Open the `fomws2025aud` folder by `File -> Open Folder` from the menu.
 - _Note:_ If using WSL, open the folder from your WSL drive. It is available via Explorer within the Linux drive - or directly by typing in `\\wsl.localhost\Debian\home\<USER>` (use "Ubuntu" instead of Debian, depending on your installation and replace `<USER>` by your WSL Linux username).
   <br />
   <img src="docs/pics/readme_vscode_wsl_folder.png" width="100px" />
@@ -280,7 +359,7 @@ make docker       # build & run
 - After installation, open a "Developer PowerShell for VS 2022".
 - Navigate to your repository folder, create a `build` subdirectory and run CMake:
 ```ps
-cd $env:USERPROFILE\workspace\fomss2024aud    # or whatever this is for you
+cd $env:USERPROFILE\workspace\fomws2025aud    # or whatever this is for you
 mkdir build
 cd build
 cmake -G "NMake Makefiles" ..
