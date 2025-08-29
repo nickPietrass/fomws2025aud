@@ -1,10 +1,10 @@
 # README
 
-![CMake Multi Platform Build](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main) 
-![docker](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/docker.yml/badge.svg?branch=main)
-![gtest](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/gtest.yml/badge.svg?branch=main)
-![valgrind](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/valgrind.yml/badge.svg?branch=main)
-![cppcheck](https://github.com/thorstendikmann/fomws2025aud/actions/workflows/cppcheck.yml/badge.svg?branch=main)
+![CMake Multi Platform Build](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/cmake-multi-platform.yml/badge.svg?branch=main) 
+![docker](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/docker.yml/badge.svg?branch=main)
+![gtest](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/gtest.yml/badge.svg?branch=main)
+![valgrind](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/valgrind.yml/badge.svg?branch=main)
+![cppcheck](https://github.com/thorstendikmann/fomss2024aud/actions/workflows/cppcheck.yml/badge.svg?branch=main)
 
 This repository contains material and source code examples corresponding to the "Algorithm & Datastructures" lecture at FOM Hochschule für Oekonomie & Management gGmbH.
 
@@ -39,6 +39,22 @@ cd ~ && npm install doctoc
   - [Cleaning the build folder](#cleaning-the-build-folder)
   - [Getting updates](#getting-updates)
   - [Reverting local changes](#reverting-local-changes)
+- [Optional parts](#optional-parts)
+  - [Recommended addons](#recommended-addons)
+    - [Boost](#boost)
+    - [GoogleTest](#googletest)
+    - [Doxygen](#doxygen)
+    - [Valgrind](#valgrind)
+    - [cppcheck](#cppcheck)
+  - [Docker-based Build Environment](#docker-based-build-environment)
+    - [Installing Docker](#installing-docker)
+    - [Building and Executing](#building-and-executing)
+  - [Windows-native builds](#windows-native-builds)
+  - [Playgrounds](#playgrounds)
+    - [Assembler & Qemu](#assembler--qemu)
+    - [Rust](#rust)
+    - [Terraform](#terraform)
+    - [Alternative Compilers](#alternative-compilers)
 - [References](#references)
   - [Examples and some additional literature:](#examples-and-some-additional-literature)
   - [Toolchain](#toolchain)
@@ -64,7 +80,7 @@ apt-get install git
 - Then as "normal" user (not root!) clone this repository locally. _Note:_ This is cloning via https Web URL. Alternatively, ssh could be used.
 ```sh
 # cd to your local workspace folder of choice
-git clone https://github.com/thorstendikmann/fomws2025aud.git
+git clone https://github.com/thorstendikmann/fomss2024aud.git
 ```
 
 ### Local Build Requirements
@@ -150,7 +166,7 @@ A graphical IDE is optional, but generally considered to be very useful supporti
 
 ### Running CMake in Visual Studio Code
 
-- Open the `fomws2025aud` folder by `File -> Open Folder` from the menu.
+- Open the `fomss2024aud` folder by `File -> Open Folder` from the menu.
 - _Note:_ If using WSL, open the folder from your WSL drive. It is available via Explorer within the Linux drive - or directly by typing in `\\wsl.localhost\Debian\home\<USER>` (use "Ubuntu" instead of Debian, depending on your installation and replace `<USER>` by your WSL Linux username).
   <br />
   <img src="docs/pics/readme_vscode_wsl_folder.png" width="100px" />
@@ -226,6 +242,232 @@ git checkout -- <file>
 git reset --hard  # DANGEROUS! 
 ```
 
+## Optional parts
+
+These parts go beyond an initial minimal setup to be able to compile and execute the given examples. Within the lecture, additional libraries are utilized which are not necessary from the very beginning. Their installation is described below.
+
+Today, Docker is common to have an "all in one" build environment, especially to ensure compatibility and perform integration checks based on defined environments. The scripts of this repository can be executed in a docker environment. Setting up Docker is therefore as relevant as it is instructive.
+
+Beyond the lecture, the scripts contained in this repository can be used to experiment with other programming languages and (build) environments. Optional, but a good start for a playground.
+
+### Recommended addons
+
+#### Boost
+
+- Boost is a library collection offering many additions to the C++ standard library, including structures and algorithms.
+- Install boost libraries (... all)
+```sh
+apt-get install libboost-all-dev
+```
+- Ensure you run CMake with the `-DWITH_BOOST=ON` option, e.g.
+```sh
+cmake .. -DWITH_BOOST=ON
+```
+
+#### GoogleTest
+
+GoogleTest is a well-known testing and mocking framework for C++. It's for unit testing "and beyond", while we will docus on utilizing it ensuring our algorithms do what they're supposed to.
+```sh
+apt-get install googletest libgtest-dev
+```
+- Ensure you run CMake with the `-DWITH_GTEST=ON` option, e.g.
+```sh
+cmake .. -DWITH_GTEST=ON
+```
+
+#### Doxygen
+
+Doxygen is a documentation generator. Especially in larger projects it's often helpful to have a central website-based code documentation. With additional tools (from `graphviz`) relationships and dependencies within the source code repository can be visualized.
+
+```sh
+apt-get install doxygen graphviz
+```
+- Ensure you run CMake with the `-DWITH_DOC=ON` option, e.g.
+```sh
+cmake .. -DWITH_DOC=ON
+```
+
+#### Valgrind
+
+For checking proper memory management, `valgrind` is the tool of choise.
+
+- Installing `valgrind`
+```sh
+apt-get install valgrind
+```
+- Running `valgrind` by simply inserting it "in front" of command to be executed.
+```sh
+valgrind bin/hello/hello_world_c
+```
+
+#### cppcheck
+
+Additional static code analysis tool to detect potential issues with the source code.
+
+```sh
+apt-get install cppcheck
+```
+- In the main folder run
+```sh
+cppcheck src --force
+# A good set of warnings for this lecture:
+cppcheck src --force  --enable=all --suppress=unusedFunction --suppress=redundantAssignment --suppress=variableScope --suppress=missingInclude --inline-suppr --template=gcc
+```
+
+<!--
+#### Visualization
+
+- For compiling and running the GUI examples, the following is needed:
+```sh
+apt-get install graphviz-dev
+apt-get install qt6-base-dev
+```
+- Ensure you run CMake with the `-DWITH_VIS=ON` option, e.g.
+```sh
+cmake .. -DWITH_VIS=ON
+```
+-->
+
+### Docker-based Build Environment
+
+#### Installing Docker
+
+Based on the given operating system environment, there are different ways how to install Docker:
+
+- Docker in "native" Linux
+
+    - The "host" system only needs to have docker installed.
+    - [Install Docker Desktop on Linux](https://docs.docker.com/desktop/install/linux-install/)
+
+- Docker - Windows with WSL (+Ubuntu/Debian)
+
+    - With WSL, it's a bit trickyer - we need to install Docker in Windows, first. There is documentation on how to do that:
+        - [Docker Desktop WSL 2 backend on Windows](https://docs.docker.com/desktop/wsl/)
+        - [Get started with Docker remote containers on WSL 2](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers)
+    - In the WSL Linux guest system, docker also needs to be "installed":
+```sh
+apt-get install docker
+```
+
+#### Building and Executing
+
+- The [Makefile](Makefile) contains several commands to simplify the build and execution with docker.
+```sh
+make dockerbuild  # only build image
+make docker       # build & run
+```
+- Running the image will execute [run.sh](src/run.sh) inside the image - The script just calls a couple of compiled programs.
+- The [Dockerfile](Dockerfile) also contains a section to automatically start a "documentation server" - this will be available at [localhost:8080/](http://localhost:8080/) then.
+
+### Windows-native builds
+
+- In general, setting up a C/C++ development environment is much easier in Linux/Unix or when utilizing Windows Subsystem for Linux than trying to compile "natively" on Windows. This is especially true when including third-party libraries where no standards exists where header include files or binary libraries can be found in the system. A native Windows build therefore is _not recommended_!
+- Ignoring this: for running a native Windows build, first download and install [Build Tools for Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) (Section "Tools for Visual Studio"). Ensure at a minimum the following will be installed: "Desktop development with C++".
+- After installation, open a "Developer PowerShell for VS 2022".
+- Navigate to your repository folder, create a `build` subdirectory and run CMake:
+```ps
+cd $env:USERPROFILE\workspace\fomss2024aud    # or whatever this is for you
+mkdir build
+cd build
+cmake -G "NMake Makefiles" ..
+nmake
+```
+
+
+### Playgrounds
+
+This section describes how to setup some playgrounds for additional programming languages and build environments.
+
+#### Assembler & Qemu
+
+- Install assembler and qemu emulator. Add architecture if needed.
+```sh
+# dpkg --print-architecture
+#dpkg --add-architecture armel
+
+apt-get install crossbuild-essential-armel
+apt-get install qemu-user
+```
+
+- Cross-Build with CMake for ARM:
+```sh
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../CMake-Toolchain-linux-arm.txt
+```
+- Execute cross-compiled assembler with `qemu-arm`
+
+```sh
+qemu-arm bin/hello_world_asm_arm
+```
+
+#### Rust
+
+- Install rust compiler and package manager.
+```sh
+# package rustup in future Debian versions?
+apt-get install rustc cargo rustfmt
+```
+- Build rust files
+```sh
+cargo build
+```
+- Run binaries
+```sh
+cargo run --bin hello
+cargo run --bin hellorust
+```
+- Run tests
+
+
+#### Terraform
+
+Not having a suitable build environment at hand? No problem! With today's hyperscalers, we're only a couple of commands away from building one. This is utilizing AWS here - could be any hyperscaler, though.
+
+- Installation: see [Install Terraform](https://developer.hashicorp.com/terraform/install)
+- AWS Provider Documentation: [AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- Ensure you have a local ssh key in `~/.ssh/id_ed25519.pub`.
+- Running Terraform to setup a build environment:
+```sh
+cd  terraform
+terraform init
+terraform plan
+terraform apply -auto-approve
+# terraform destroy
+```
+- This should setup a "plain" build environment with an installed docker.
+- At the end of the script, the `instance_public_ip_addr` will be displayed. Then you can login:
+```sh
+ssh admin@<xx.yyy.zz.dd>
+# and on remote system:
+mkdir workspace && cd workspace
+git clone https://github.com/thorstendikmann/fomss2024aud.git
+cd fomss2024aud/
+```
+- ... and build:
+```sh
+mkdir build && cd build
+cmake ..
+make
+```
+- ... or via Docker:
+```sh
+cd ~/workspace/fomss2024aud
+make docker
+```
+
+#### Alternative Compilers
+
+- Instead of GCC, alternative compilers can be utilized (though not recommended). Let's install `clang` and the `lld` linker
+```sh
+apt-get install clang lld
+```
+
+- Before running CMake the first time, we can enable `clang` via environment variables. `lld` as linker has to be selected manually via `-D` option.
+```sh
+export CC=/usr/bin/clang
+export CXX=/usr/bin/clang++
+cmake .. -DUSE_LLD=ON
+```
+
 ## References
 
 ### Examples and some additional literature:
@@ -266,6 +508,8 @@ git reset --hard  # DANGEROUS!
 - [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/)
 - [QEMU](https://www.qemu.org/)
 - [Git](https://git-scm.com/)
+- [Terraform](https://www.terraform.io/)
+- [Rust & Cargo](https://doc.rust-lang.org/stable/cargo/)
 - [Debian](https://www.debian.org/)
 - [Valgrind](https://valgrind.org/)
 - [Google Test](https://google.github.io/googletest/)
