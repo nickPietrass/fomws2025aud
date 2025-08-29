@@ -100,7 +100,6 @@ RUN     apk add --no-cache python3 py3-pip
 #ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 
 COPY    --from=buildenv /buildenv/destdir /app
-COPY    --from=buildenv /buildenv/app/src /app/src
 
 RUN     /app/bin/run.sh
 RUN     /app/bin/rungtest.sh /app/test
