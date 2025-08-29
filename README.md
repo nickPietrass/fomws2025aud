@@ -26,7 +26,11 @@ cd ~ && npm install doctoc
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Quick Start: Local Build on Commandline](#quick-start-local-build-on-commandline)
+- [Quick Start](#quick-start)
+  - [Github Codespace](#github-codespace)
+    - [Creating a Codespace](#creating-a-codespace)
+    - [Editing files in a Codespace](#editing-files-in-a-codespace)
+  - [Local Build on Commandline](#local-build-on-commandline)
   - [Clone Repository](#clone-repository)
   - [Local Build Requirements](#local-build-requirements)
   - [Local Build Execution](#local-build-execution)
@@ -93,9 +97,6 @@ The following described how to develop, compile and run the source code in a git
   <br />
   <img src="docs/pics/codespace10.png" width="200px" />
 - Create two files in this folder, `CMakeLists.txt` and `hellotd.c`
-  <br />
-  <img src="docs/pics/codespace11.png" width="200px" />
-- Create two files, `CMakeLists.txt` and `hellotd.c`
   <br />
   <img src="docs/pics/codespace11.png" width="200px" />
 - Add a "hello world"-example to the `hellotd.c` file:
