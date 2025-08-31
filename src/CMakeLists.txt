@@ -105,30 +105,30 @@ MACRO(td_include_subdirectories)
     ENDFOREACH()
 ENDMACRO()
 
-## Boost
-if(WITH_BOOST)
-    message("-- Searching for Boost libraries")
-    set(Boost_USE_STATIC_LIBS OFF)
-    set(Boost_USE_MULTITHREADED OFF)
-    set(Boost_USE_STATIC_RUNTIME OFF)
-    find_package(Boost 1.74 REQUIRED COMPONENTS log)
+# ## Boost
+# if(WITH_BOOST)
+#     message("-- Searching for Boost libraries")
+#     set(Boost_USE_STATIC_LIBS OFF)
+#     set(Boost_USE_MULTITHREADED OFF)
+#     set(Boost_USE_STATIC_RUNTIME OFF)
+#     find_package(Boost 1.74 REQUIRED COMPONENTS log)
     
-    message("-- Found Boost libraries: ${Boost_LIBRARIES}")
+#     message("-- Found Boost libraries: ${Boost_LIBRARIES}")
     
-    link_directories( $ENV{LD_LIBRARY_PATH}
-        ${Boost_LIBRARY_DIRS}
-    )
-    include_directories(
-        $ENV{LD_INCLUDE_PATH}
-        ${Boost_INCLUDE_DIR}
-    )
-endif(WITH_BOOST)
+#     link_directories( $ENV{LD_LIBRARY_PATH}
+#         ${Boost_LIBRARY_DIRS}
+#     )
+#     include_directories(
+#         $ENV{LD_INCLUDE_PATH}
+#         ${Boost_INCLUDE_DIR}
+#     )
+# endif(WITH_BOOST)
 
-## Google Test
-if(WITH_GTEST)
-    message("-- Searching for GTest libraries")
-    find_package(GTest REQUIRED)
-endif(WITH_GTEST)
+# ## Google Test
+# if(WITH_GTEST)
+#     message("-- Searching for GTest libraries")
+#     find_package(GTest REQUIRED)
+# endif(WITH_GTEST)
 
 td_include_subdirectories("chapter")
 add_subdirectory(helloworlds)
