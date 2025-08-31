@@ -10,7 +10,7 @@ This repository contains material and source code examples corresponding to the 
 
 The source code can be compiled "traditionally" utilizing CMake or conveniently compiled and executed in a Docker container.
 
-Any reasonably recent Debian version or Debian-based system like Ubuntu or Linux Mint will be suitable for this guide, either running directly on the computer or within the "Windows Subsystem for Linux".
+Any reasonably recent Debian version or Debian-based system like Ubuntu or Linux Mint will be suitable for this guide, either running directly on the computer or within the "Windows Subsystem for Linux". Macs usually work with the CLang compiler.
 
 **Table of Contents**
 
@@ -26,11 +26,12 @@ cd ~ && npm install doctoc
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Quick Start](#quick-start)
-  - [Github Codespace](#github-codespace)
-    - [Creating a Codespace](#creating-a-codespace)
-    - [Editing files in a Codespace](#editing-files-in-a-codespace)
-  - [Local Build on Commandline](#local-build-on-commandline)
+- [Quick Start - Github Codespace](#quick-start---github-codespace)
+  - [Creating a Codespace](#creating-a-codespace)
+  - [Editing files in a Codespace](#editing-files-in-a-codespace)
+  - [Committing & Pushing files from a Codespace](#committing--pushing-files-from-a-codespace)
+  - [Fetching changes from colleagues](#fetching-changes-from-colleagues)
+- [Local Build on Commandline](#local-build-on-commandline)
   - [Clone Repository](#clone-repository)
   - [Local Build Requirements](#local-build-requirements)
   - [Local Build Execution](#local-build-execution)
@@ -39,7 +40,7 @@ cd ~ && npm install doctoc
 - [Integrated Development Environment](#integrated-development-environment)
   - [Running CMake in Visual Studio Code](#running-cmake-in-visual-studio-code)
   - [Running Programs in VS Code](#running-programs-in-vs-code)
-- [Interacting with the repository](#interacting-with-the-repository)
+- [Further Topics](#further-topics)
   - [Cleaning the build folder](#cleaning-the-build-folder)
   - [Getting updates](#getting-updates)
   - [Reverting local changes](#reverting-local-changes)
@@ -52,19 +53,18 @@ cd ~ && npm install doctoc
     - [Alternative Compilers](#alternative-compilers)
 - [References](#references)
   - [Examples and some additional literature:](#examples-and-some-additional-literature)
+  - [Additional Links](#additional-links)
   - [Toolchain](#toolchain)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <!-- \endcond
 -->
 
-## Quick Start
-
-### Github Codespace
+## Quick Start - Github Codespace
 
 The following described how to develop, compile and run the source code in a github codespace. This option requires a github account and adding this account as "collaborator" to this project, but no further tools need to be installed on your computer.
 
-#### Creating a Codespace
+### Creating a Codespace
 
 - Create a github account.
 - Ask for adding this account as "collaborator" to this project.
@@ -91,7 +91,7 @@ The following described how to develop, compile and run the source code in a git
   ```
   <img src="docs/pics/codespace05.png" width="300px" />
 
-#### Editing files in a Codespace
+### Editing files in a Codespace
 
 - Navigate to the `user` folder. Create a new folder for own developments. To avoid potential conflicts with the repository, let's create a separate folder for you. Assuming `td` are your initials.
   <br />
@@ -134,7 +134,41 @@ The following described how to develop, compile and run the source code in a git
   ```
   <img src="docs/pics/codespace16.png" width="200px" />
 
-### Local Build on Commandline
+### Committing & Pushing files from a Codespace
+
+- _Note:_ In this _Quick Start_ guide, we ignore advanced `git` techniques like creating branches or forking repositories and creating pull requests. Especially when working in teams these techniques are essential and a strength of `git`. Further information can be found in the tutorials mentioned in [Additional Links](#additional-links).
+
+- All files created or modified are yet local to the github Codespace - and prone to unintentional changes or deletion. To make changes aware for the whole team, the changes have to be committed - and these commits have to be pushed back to the github repository.
+Let's inspect the changed files first. Codespace indicated changed files by highlighting them in the Explorer menu:
+  <br>
+  <img src="docs/pics/codespace20.png" width="200px" />
+  <br>
+Often it is more convenient to work on the commandline, so the same can be achieved using the Terminal and typing `git status`:
+  <br>
+  <img src="docs/pics/codespace21.png" width="200px" />
+- We first must select what to commit. Once again this is possible using the Source Control window and adding individual files to the "Staged Changes" ...
+  <br>
+  <img src="docs/pics/codespace22.png" width="200px" />
+  <br>
+  ... or utilizing the commandline. `git add -A` adds all changes - `git add src/user/td/hellotd.c` marks only a single file for the commit.
+  <br>
+  <img src="docs/pics/codespace23.png" width="200px" />
+
+- _Remember:_ Only commit changes that at least do compile without errors and warnings. Otherwise, this will break the compilation for all others the next time they retrieve new changes from the repository.
+Also, please enter meaningful commit messages for everyone on the team to understand what has changed.
+
+- **Note:** The changes are still local. To make them available, all commits must be pushed back to the repository. For this, use `git push`.
+After your push, Github will build and execute the source code and inspect it for potential runtime issues. The result of these checks are displayed at the top of this page.
+
+### Fetching changes from colleagues
+
+- To receive the latest updates from others working on the repository, use `git pull` to integrate those changes to your local Codespace repository:
+  <br>
+  <img src="docs/pics/codespace25.png" width="200px" />
+
+
+
+## Local Build on Commandline
 
 The following steps describe the minimal environment to download, compile and run the examples from this repository - and how to create own build targets.
 No IDE is required yet, it all works on the commandline.
@@ -263,7 +297,7 @@ A graphical IDE is optional, but generally considered to be very useful supporti
 
 <!-- \cond DO_NOT_DOCUMENT
 -->
-- It is recommended, to create a CMake Build Target first. See section [add own source code](#add-own-source-code). In other words: There must be a `add_executable(...)` in one `CMakeList.txt` for every of your application containing a `main()` function.
+- It is recommended, to create a CMake Build Target first. In other words: There must be a `add_executable(...)` in one `CMakeList.txt` for every of your application containing a `main()` function.
 <!-- \endcond
 -->
 - With installed [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension, every CMake Build Target is available within the CMake menu (see yellow highlight). The current target can be changed by clicking the pencil icon (green highlight). The code can be executed via the arrow button (blue highlight) - either in debug or just launch mode without debugging.
@@ -272,10 +306,7 @@ A graphical IDE is optional, but generally considered to be very useful supporti
 
 - Details can be found in the docs: [CMake: Debug and launch](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/debug-launch.md)
 
-## Interacting with the repository
-
-This repository will be frequently updated. The following is a "cheat sheet" of commands to ensure the local repository can get these updates - and some "first aid" commands to troubleshoot.
-This is just a brief overview of few basics - a more sophisticated intro into `git` can be found at [git-scm.com](https://git-scm.com/book/en/v2)
+## Further Topics
 
 ### Cleaning the build folder
 
@@ -414,6 +445,11 @@ cmake .. -DUSE_LLD=ON
 - J. Ernesti and P. Kaiser, Python 3. Rheinwerk, 2023.
 - M. Inden, Einfach Python. dpunkt Verlag, 2022.
 - S. Elter, Schrödinger programmiert Python. Rheinwerk Verlag, 2021.
+
+### Additional Links
+
+- [git-scm.com - Git tutorial](https://git-scm.com/docs/gittutorial)
+- [w3schools - Git tutorial](https://www.w3schools.com/git/)
 
 
 ### Toolchain
