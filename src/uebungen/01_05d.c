@@ -43,16 +43,16 @@ int main(void){
 
     int MAX = 5000;
     struct timespec begin, after_basic, after_sieve;
-    clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin);
     findPrimesBasic(MAX);
-    clock_gettime(CLOCK_MONOTONIC_RAW, &after_basic);
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &after_basic);
 
      printf ("Basic Algo took %f seconds\n",
             (after_basic.tv_nsec - begin.tv_nsec) / 1000000000.0 +
             (after_basic.tv_sec  - begin.tv_sec));
 
     findPrimesSieve(MAX);
-    clock_gettime(CLOCK_MONOTONIC_RAW, &after_sieve);
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &after_sieve);
     printf ("Sieve Algo took %f seconds\n",
             (after_sieve.tv_nsec - after_basic.tv_nsec) / 1000000000.0 +
             (after_sieve.tv_sec  - after_basic.tv_sec));
